@@ -1,7 +1,7 @@
 ---
 title: Video filters for meeting apps
 author: v-ypalikila
-description: Learn how to add filters, frames, makeups, and so on, to videos and make your videos more presentable for meetings.
+description: Learn how to add Styles, frames, makeups, and so on, to videos and make your videos more presentable for meetings.
 ms.topic: conceptual
 ms.localizationpriority: medium
 ms.author: v-ypalikila
@@ -13,11 +13,11 @@ ms.date: 08/08/2022
 > [!NOTE]
 > Video filter is currently available only in [public developer preview](../resources/dev-preview/developer-preview-intro.md). You must be part of the public developer preview for Microsoft Teams to use the video filters.
 
-As online meetings have become more prominent, teams users spend significant amount of time reviewing work, watching videos, and collaborating with teammates on video calls. Considering this, Microsoft Teams provides an immersive and engaging meeting experience with video filters.
+As online meetings have become more prominent, Teams users spend significant amount of time reviewing work, watching videos, and collaborating with teammates on video calls. Considering this, Microsoft Teams provides an immersive and engaging meeting experience with video filters.
 
-Users can use the video filter app in the meeting lobby and in-meeting scenarios and easily apply video effects in all meetings and calls. Teams supports filters, frames, makeups, and so on, to make your meeting experience more presentable.
+Users can use the video filter app in the meeting lobby and in-meeting scenarios and easily apply video effects in all meetings and calls. Teams supports Styles, frames, makeups, and so on, to make your meeting experience more presentable.
 
-# [Meeting lobby experience](#tab/meeting-lobby-experience)
+# [Meeting lobby(comment) experience](#tab/meeting-lobby-experience) 
 
 :::image type="content" source="../assets/images/apps-in-meetings/pre-meeting-video-filter-experience.png" alt-text="Screenshot that shows an meeting lobby video filter app experience":::
 
@@ -29,7 +29,7 @@ Users can use the video filter app in the meeting lobby and in-meeting scenarios
 The video filter app takes permission from a user to access their video stream, modifies the video stream by applying effects, and then feeds that video stream back into Teams.
 
 :::image type="content" source="../assets/images/apps-in-meetings/video-filter-app-process.png" alt-text="Diagram that shows how a video is received, processed and sent as an output. ":::
-abs
+(comment:image)
 
 ## Create a video filter app
 
@@ -38,7 +38,7 @@ abs
 > * Video filter is supported only on Teams desktop client. However, if a user joins a meeting through mobile and another user applies video filters from desktop, the mobile users can see the effects applied by the user on desktop.
 > * Video filter isn't supported on Teams web client, Government Community Cloud (GCC), GCC-High, or Department of Defense (DOD) tenants.
 
-Before you begin, you must have a basic understanding of [Formats for video rendering](/windows/win32/medfound/recommended-8-bit-yuv-formats-for-video-rendering).
+Before you begin, you must have a basic understanding of [Formats for video rendering](/windows/win32/medfound/recommended-8-bit-yuv-formats-for-video-rendering)(comment: link not working, right link: https://learn.microsoft.com/en-us/windows/win32/medfound/recommended-8-bit-yuv-formats-for-video-rendering).
 
 The video filter app defines the video filter and applies it to the user's video stream. To enable video filter experience for your app:
 
@@ -54,7 +54,7 @@ The video filter app defines the video filter and applies it to the user's video
 
 ## Install the JavaScript SDK
 
-The [Microsoft Teams JavaScript SDK](https://www.npmjs.com/package/@microsoft/teams-js) is a JavaScript package published on [npm](https://www.npmjs.com/package/@microsoft/teams-js/v/2.0.0), and you can download through npm or Yarn.
+The [Microsoft Teams JavaScript SDK](https://www.npmjs.com/package/@microsoft/teams-js) is a JavaScript package published on [npm](https://www.npmjs.com/package/@microsoft/teams-js/v/2.0.0), and you can download through npm or yarn.
 
 ### npm
 
@@ -117,7 +117,6 @@ The following is an example of a manifest for a video filter app:
     "color": "color.png" // A relative path to a full color .png icon — 192px X 192px
   },
   "accentColor": "#1da2b4",
-  "permissions": [ "identity", "messageTeamMembers" ],
   "authorization": { // RSC permission section for getting teams client sdk video api.
     "permissions": {
       "resourceSpecific": [
@@ -137,38 +136,34 @@ The following is an example of a manifest for a video filter app:
     "videoFilters": [ // for showing video filters inside of video effects quick picker section.
       {
         "id": "310a65de-24ce-445e-9e1e-dd4ef0f0114b", // GUID
-        "name": "Category_FilterA", // Category can be: Styles, Frames, Makeup, and Others
+        "name": "Category_FilterA", // Category can be: Styles, Frames, Looks, and Others
         "thumbnail": "PreviewEffect.png" // A relative path to the video filter thumbnail.png
       }
     ],
     // The Video app web page url for both processing the video frames and customization experience. The domain should be one of **validDomain**.
-    "videoFiltersConfigurationUrl": "your_videofilters_configuration_url" // Example: https://videoapp.microsoft.com/Teams-VideoApp-example/app/configure.html
+    "videoFiltersConfigurationUrl": "your_videofilters_configuration_url" // Example: https://videoapp.microsoft.com/Teams-VideoApp-example/app/configure.html(comment: url not working)
   }
 }
 ```
 
 Ensure that you adhere to the following requirements to update the app manifest:
 
-* Each `videoFilters` property has a non-empty GUID, and the GUID is unique for the `meetingExtensionDefinition` property.
+* Each item `videoFilters` property has a non-empty GUID, and the GUID is unique for the `meetingExtensionDefinition` property.
 
 * The number of video filters for an app is limited to 32.
 
 * The maximum size for a video filter thumbnail image size is 2 MB.
 
-* The `videoFiltersConfigurationUrl` property isn't empty.
+* The `videoFiltersConfigurationUrl` property shouldn't be empty.
 
 * The thumbnail image file resolution should match 74 x 42 pixels of the viewport. The absolute value must be less than 0.01.
 
 * The value of each video filter's thumbnail is a valid path to a file in the PNG format as 24-bit RGB or 32-bit RGBA.
 
-* Supported thumbnail image RawFormat is PNG.
-
-* Supported thumbnail image PixelFormat is PixelFormat24bppRGB or PixelFormat32bppARGB.
-
 * Video Filter categories:
   * Styles: Filters that add visual effects to the video stream, including graphical styles such as color and texture changes.
   * Frames: Filters with additional add-on designs, which don't have semantic information.
-  * Makeup: Virtual makeup based on facial area.
+  * Looks: Virtual makeup based on facial area.
   * Others: Filters that don’t fall into the categories above.
 
 * Use descriptive terms as the filter name to best reflect the effect. Avoid using offensive words that don't conform with Microsoft’s value of inclusivity.
@@ -177,12 +172,10 @@ Ensure that you adhere to the following requirements to update the app manifest:
 
   * When you hover over the filter, the tooltip must display the text **[Filter name] from [Developer name]**. For example, Island Style from Contoso.
 
-  * After applying a filter, the hover over text on the filter's more icon (**...**) must display the text **Open [App name]**. For example, Open Contoso.
-
   * Add the filter categories as a prefix to the filter name. For example:
     * Styles_[Filter name]
     * Frames_[Filter name]
-    * Makeup_[Filter name]
+    * Looks_[Filter name]
     * Others_[Filter name]
 
 ## Validate your app package
@@ -216,9 +209,9 @@ The app validation tool checks your app package against the test cases that Micr
 
 ---
 
-## Video extensibility API reference
+## Build your first video filter app
 
-You can configure your app to fetch the user's video stream during the meeting lobby and in-meeting experience. The `videoFiltersConfigurationUrl` hosts the code where the video extensibility callbacks are registered. Teams client loads the index.html file, which runs the code available in the index.js file.
+You can configure your app to fetch the user's video stream during the pre-join and in-meeting experience. The `videoFiltersConfigurationUrl` hosts the code where the video extensibility callbacks are registered. Teams client loads the index.html file, which runs the code available in the index.js file.
 
 Following is the code sample of the `index.html` file:
 
